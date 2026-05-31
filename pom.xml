@@ -18,6 +18,7 @@
         <org.mapstruct.version>1.6.3</org.mapstruct.version>
         <spring-boot.run.profiles>localmysql</spring-boot.run.profiles>
         <jwt-uri>http://example.com:9090</jwt-uri>
+        <logbook.version>4.0.4</logbook.version>
     </properties>
     <dependencies>
         <dependency>

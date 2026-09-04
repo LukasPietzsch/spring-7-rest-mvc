@@ -2,6 +2,8 @@ package guru.springframework.spring6restmvc.services;
 
 import guru.springframework.spring6restmvc.entities.Beer;
 import guru.springframework.spring6restmvc.events.BeerCreatedEvent;
+import guru.springframework.spring6restmvc.events.BeerDeletedEvent;
+import guru.springframework.spring6restmvc.events.BeerUpdateEvent;
 import guru.springframework.spring6restmvc.mappers.BeerMapper;
 import guru.springframework.spring6restmvc.model.BeerDTO;
 import guru.springframework.spring6restmvc.model.BeerStyle;
@@ -136,6 +138,7 @@ public class BeerServiceJPA implements BeerService {
     @Override
     public Optional<BeerDTO> updateBeerById(UUID beerId, BeerDTO beer) {
         clearCache(beerId);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
         AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
 
@@ -145,8 +148,13 @@ public class BeerServiceJPA implements BeerService {
             foundBeer.setUpc(beer.getUpc());
             foundBeer.setPrice(beer.getPrice());
             foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
+
+            Beer updatedSavedBeer = beerRepository.save(foundBeer);
+
+            applicationEventPublisher.publishEvent(new BeerUpdateEvent(updatedSavedBeer, auth));
+
             atomicReference.set(Optional.of(beerMapper
-                    .beerToBeerDto(beerRepository.save(foundBeer))));
+                    .beerToBeerDto(updatedSavedBeer)));
         }, () -> {
             atomicReference.set(Optional.empty());
         });
@@ -161,6 +169,10 @@ public class BeerServiceJPA implements BeerService {
 
         if (beerRepository.existsById(beerId)) {
             beerRepository.deleteById(beerId);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            applicationEventPublisher.publishEvent(new BeerDeletedEvent(beerId, auth));
+
             return true;
         }
         return false;
@@ -180,6 +192,7 @@ public class BeerServiceJPA implements BeerService {
     public Optional<BeerDTO> patchBeerById(UUID beerId, BeerDTO beer) {
         clearCache(beerId);
 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         AtomicReference<Optional<BeerDTO>> atomicReference = new AtomicReference<>();
 
         beerRepository.findById(beerId).ifPresentOrElse(foundBeer -> {
@@ -198,8 +211,13 @@ public class BeerServiceJPA implements BeerService {
             if (beer.getQuantityOnHand() != null){
                 foundBeer.setQuantityOnHand(beer.getQuantityOnHand());
             }
+
+            Beer patchedSavedBeer = beerRepository.save(foundBeer);
+
+            applicationEventPublisher.publishEvent(new BeerUpdateEvent(patchedSavedBeer, auth));
+
             atomicReference.set(Optional.of(beerMapper
-                    .beerToBeerDto(beerRepository.save(foundBeer))));
+                    .beerToBeerDto(patchedSavedBeer)));
         }, () -> {
             atomicReference.set(Optional.empty());
         });

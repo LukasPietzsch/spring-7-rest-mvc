@@ -1,6 +1,6 @@
 package guru.springframework.spring7restmvc.config;
 
-import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -31,7 +31,7 @@ public class SpringSecConfig {
     @Order(2)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorize -> {
-                    authorize.requestMatchers("/v3/api-docs**", "/swagger-ui/**",  "/swagger-ui.html").permitAll()
+                    authorize.requestMatchers("/v3/api-docs**", "/v3/api-docs/**","/swagger-ui/**",  "/swagger-ui.html").permitAll()
                       .anyRequest().authenticated();
                 })
                .oauth2ResourceServer(httpSecurityOAuth2ResourceServerConfigurer -> {

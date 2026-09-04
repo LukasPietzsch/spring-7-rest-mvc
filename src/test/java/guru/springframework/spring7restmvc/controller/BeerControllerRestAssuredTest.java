@@ -26,7 +26,7 @@ import static io.restassured.RestAssured.given;
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Import(BeerControllerRestAssuredTest.TestConfig.class)
-@ComponentScan(basePackages = "guru.springframework.spring6restmvc")
+@ComponentScan(basePackages = "guru.springframework.spring7restmvc")
 public class BeerControllerRestAssuredTest {
 
     OpenApiValidationFilter filter = new OpenApiValidationFilter(OpenApiInteractionValidator

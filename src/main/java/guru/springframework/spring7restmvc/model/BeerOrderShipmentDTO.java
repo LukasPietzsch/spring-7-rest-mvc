@@ -22,9 +22,6 @@ public class BeerOrderShipmentDTO {
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
 
-    @JsonProperty("beerOrderId")
-    private UUID beerOrderId;
-
     @JsonProperty("trackingNumber")
     private String trackingNumber;
 

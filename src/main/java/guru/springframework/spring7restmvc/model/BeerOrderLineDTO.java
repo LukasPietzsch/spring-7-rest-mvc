@@ -23,11 +23,8 @@ public class BeerOrderLineDTO {
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
 
-    @JsonProperty("beerOrderId")
-    private UUID beerOrderId;
-
-    @JsonProperty("beerId")
-    private UUID beerId;
+    @JsonProperty("beer")
+    private BeerDTO beer;
 
     @JsonProperty("orderQuantity")
     private Integer orderQuantity;

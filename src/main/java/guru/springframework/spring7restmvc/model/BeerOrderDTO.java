@@ -23,11 +23,14 @@ public class BeerOrderDTO {
     @JsonProperty("customerRef")
     private String customerRef;
 
-    @JsonProperty("customerId")
-    private UUID customerId;
+    @JsonProperty("customer")
+    private CustomerDTO customer;
 
     @JsonProperty("beerOrderLines")
     private Set<BeerOrderLineDTO> beerOrderLines;
+
+    @JsonProperty("beerOrderShipment")
+    private BeerOrderShipmentDTO beerOrderShipment;
 
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;
